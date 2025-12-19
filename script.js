@@ -12,14 +12,37 @@ let soupCurrentY = 0;
 const soupW = 120;
 const soupH = 120;
 function moveSoupRandomly() {
-  // Pick a new random position, favoring more left/right movement
   const maxX = window.innerWidth - soupW;
   const maxY = window.innerHeight - soupH;
-  // More likely to move left/right: pick X from full range, Y from a smaller range
-  soupTargetX = Math.random() * maxX;
-  soupTargetY = (Math.random() * 0.7 + 0.15) * maxY; // keep away from very top/bottom
+  // Add more randomness: sometimes big jumps, sometimes small, sometimes diagonal, sometimes just X or Y
+  let nextX, nextY;
+  if (isMobile()) {
+    // On mobile, favor more erratic jumps and directions
+    if (Math.random() < 0.5) {
+      // Big jump
+      nextX = Math.random() * maxX;
+      nextY = Math.random() * maxY;
+    } else {
+      // Small jump near current
+      nextX = Math.min(maxX, Math.max(0, soupTargetX + (Math.random() - 0.5) * maxX * 0.6));
+      nextY = Math.min(maxY, Math.max(0, soupTargetY + (Math.random() - 0.5) * maxY * 0.6));
+    }
+    // Occasionally move only X or Y
+    if (Math.random() < 0.3) nextX = Math.random() * maxX;
+    if (Math.random() < 0.3) nextY = Math.random() * maxY;
+  } else {
+    // Desktop: keep some randomness but less erratic
+    nextX = Math.random() * maxX;
+    nextY = (Math.random() * 0.7 + 0.15) * maxY;
+  }
+  soupTargetX = nextX;
+  soupTargetY = nextY;
+  soup.style.transition = 'transform 1.1s cubic-bezier(0.7,0.2,0.2,1)';
   soup.style.transform = `translate(${soupTargetX}px, ${soupTargetY}px)`;
-  setTimeout(moveSoupRandomly, 1500 + Math.random() * 700);
+  setTimeout(() => {
+    soup.style.transition = '';
+    moveSoupRandomly();
+  }, 900 + Math.random() * 1200);
 }
 if (soup) {
   // Hide soup initially, then show and start moving after cake/candle drop (4.3s)
