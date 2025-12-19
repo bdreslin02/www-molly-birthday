@@ -34,19 +34,43 @@ let currentX = window.innerWidth / 2;
 let currentY = 80;
 let soupHidden = false;
 
-// Handle mouse movement
-document.addEventListener('mousemove', (e) => {
-  targetX = e.clientX;
-  targetY = e.clientY;
-});
 
-// Handle touch movement
-document.addEventListener('touchmove', (e) => {
-  if (e.touches.length > 0) {
-    targetX = e.touches[0].clientX;
-    targetY = e.touches[0].clientY;
-  }
-});
+// Detect mobile device
+function isMobile() {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
+
+if (isMobile() && window.DeviceOrientationEvent) {
+  // Use device tilt for shark movement
+  window.addEventListener('deviceorientation', (event) => {
+    // gamma: left/right, beta: up/down
+    // gamma: -90 (left) to 90 (right), beta: -180 (up) to 180 (down)
+    const gamma = event.gamma || 0; // left/right
+    const beta = event.beta || 0;   // up/down
+    // Map gamma to X position
+    const minGamma = -45, maxGamma = 45;
+    const minX = 0, maxX = window.innerWidth;
+    targetX = ((gamma - minGamma) / (maxGamma - minGamma)) * (maxX - minX) + minX;
+    // Map beta to Y position (limit range for comfort)
+    const minBeta = 20, maxBeta = 70;
+    const minY = 40, maxY = window.innerHeight - 100;
+    let mappedY = ((beta - minBeta) / (maxBeta - minBeta)) * (maxY - minY) + minY;
+    mappedY = Math.max(minY, Math.min(maxY, mappedY));
+    targetY = mappedY;
+  });
+} else {
+  // Desktop fallback: mouse and touch
+  document.addEventListener('mousemove', (e) => {
+    targetX = e.clientX;
+    targetY = e.clientY;
+  });
+  document.addEventListener('touchmove', (e) => {
+    if (e.touches.length > 0) {
+      targetX = e.touches[0].clientX;
+      targetY = e.touches[0].clientY;
+    }
+  });
+}
 
 function lerp(start, end, factor) {
   return start + (end - start) * factor;
