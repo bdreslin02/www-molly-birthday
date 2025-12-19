@@ -4,7 +4,6 @@ const nourishmentCountEl = document.getElementById('nourishment-count');
 let nourishmentCount = 0;
 let popupShown = false;
 let finishPopupShown = false;
-
 // --- Soup random movement ---
 let soupTargetX = 0;
 let soupTargetY = 0;
@@ -12,7 +11,6 @@ let soupCurrentX = 0;
 let soupCurrentY = 0;
 const soupW = 120;
 const soupH = 120;
-
 function moveSoupRandomly() {
   // Pick a new random position, favoring more left/right movement
   const maxX = window.innerWidth - soupW;
@@ -23,7 +21,6 @@ function moveSoupRandomly() {
   soup.style.transform = `translate(${soupTargetX}px, ${soupTargetY}px)`;
   setTimeout(moveSoupRandomly, 1500 + Math.random() * 700);
 }
-
 if (soup) {
   // Hide soup initially, then show and start moving after cake/candle drop (4.3s)
   soup.style.visibility = 'hidden';
@@ -56,13 +53,10 @@ let targetY = 80;
 let currentX = window.innerWidth / 2;
 let currentY = 80;
 let soupHidden = false;
-
-
 // Detect mobile device
 function isMobile() {
   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 }
-
 let tiltEnabled = false;
 function setupTiltControls() {
   if (!window.DeviceOrientationEvent) return;
@@ -82,7 +76,6 @@ function setupTiltControls() {
     targetY = mappedY;
   });
 }
-
 if (isMobile() && window.DeviceOrientationEvent) {
   // Show overlay and request permission on iOS 13+ AFTER cake/candle drop (4.3s)
   window.addEventListener('DOMContentLoaded', () => {
@@ -127,32 +120,24 @@ if (isMobile() && window.DeviceOrientationEvent) {
     }
   });
 }
-
 function lerp(start, end, factor) {
   return start + (end - start) * factor;
 }
-
 function updateShark() {
   // Smooth interpolation factor (0.1 = slower, smoother movement)
   const smoothFactor = 0.08;
-  
   // Interpolate position toward target
   currentX = lerp(currentX, targetX, smoothFactor);
   currentY = lerp(currentY, targetY, smoothFactor);
-  
   // Calculate position relative to viewport
   let leftPercent = (currentX / window.innerWidth) * 100;
-  
   // Clamp the value between 5% and 85% to keep shark visible
   leftPercent = Math.max(5, Math.min(85, leftPercent));
-  
   // Clamp vertical position
   let clampedY = Math.max(50, Math.min(currentY, window.innerHeight - 100));
-  
   // Update shark position
   shark.style.left = leftPercent + '%';
   shark.style.top = clampedY + 'px';
-  
   // Flip shark based on direction of movement
   if (currentX < lastX) {
     // Moving left - flip shark to face left
@@ -162,7 +147,6 @@ function updateShark() {
     shark.style.transform = 'scaleX(1)';
   }
   lastX = currentX;
-
   // Collision detection with soup bowl (smaller activation zone)
   if (soup && !soupHidden) {
     const sharkRect = shark.getBoundingClientRect();
@@ -221,10 +205,8 @@ function updateShark() {
       }, 3000);
     }
   }
-
   // Continue animation loop
   requestAnimationFrame(updateShark);
 }
-
 // Start the animation loop
 updateShark();
