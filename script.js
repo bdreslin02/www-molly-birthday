@@ -25,7 +25,12 @@ function moveSoupRandomly() {
 }
 
 if (soup) {
-  setTimeout(moveSoupRandomly, 1000);
+  // Hide soup initially, then show and start moving after cake/candle drop (4.3s)
+  soup.style.visibility = 'hidden';
+  setTimeout(() => {
+    soup.style.visibility = 'visible';
+    moveSoupRandomly();
+  }, 4300);
 }
 let lastX = window.innerWidth / 2;
 let targetX = window.innerWidth / 2;
