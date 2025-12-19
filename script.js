@@ -28,8 +28,26 @@ if (soup) {
   // Hide soup initially, then show and start moving after cake/candle drop (4.3s)
   soup.style.visibility = 'hidden';
   setTimeout(() => {
-    soup.style.visibility = 'visible';
-    moveSoupRandomly();
+    if (isMobile()) {
+      // Place soup at bottom center, animate up, then start random movement
+      const startX = (window.innerWidth - soupW) / 2;
+      const startY = window.innerHeight - soupH - 10;
+      soup.style.transform = `translate(${startX}px, ${startY}px)`;
+      soup.style.visibility = 'visible';
+      // Animate up to a visible position (e.g., 70% height)
+      setTimeout(() => {
+        const midY = window.innerHeight * 0.7;
+        soup.style.transition = 'transform 0.7s cubic-bezier(0.68,-0.55,0.27,1.55)';
+        soup.style.transform = `translate(${startX}px, ${midY}px)`;
+        setTimeout(() => {
+          soup.style.transition = '';
+          moveSoupRandomly();
+        }, 700);
+      }, 100);
+    } else {
+      soup.style.visibility = 'visible';
+      moveSoupRandomly();
+    }
   }, 4300);
 }
 let lastX = window.innerWidth / 2;
