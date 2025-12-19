@@ -61,32 +61,34 @@ function setupTiltControls() {
 }
 
 if (isMobile() && window.DeviceOrientationEvent) {
-  // Show overlay and request permission on iOS 13+
+  // Show overlay and request permission on iOS 13+ AFTER cake/candle drop (4.3s)
   window.addEventListener('DOMContentLoaded', () => {
-    const overlay = document.getElementById('tilt-permission-overlay');
-    if (overlay) overlay.style.display = 'flex';
-    const btn = document.getElementById('enable-tilt-btn');
-    if (btn) {
-      btn.onclick = function() {
-        function enableTilt() {
-          tiltEnabled = true;
-          if (overlay) overlay.style.display = 'none';
-        }
-        if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-          DeviceOrientationEvent.requestPermission().then((response) => {
-            if (response === 'granted') {
-              enableTilt();
-            } else {
+    setTimeout(() => {
+      const overlay = document.getElementById('tilt-permission-overlay');
+      if (overlay) overlay.style.display = 'flex';
+      const btn = document.getElementById('enable-tilt-btn');
+      if (btn) {
+        btn.onclick = function() {
+          function enableTilt() {
+            tiltEnabled = true;
+            if (overlay) overlay.style.display = 'none';
+          }
+          if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+            DeviceOrientationEvent.requestPermission().then((response) => {
+              if (response === 'granted') {
+                enableTilt();
+              } else {
+                alert('Permission denied. Tilt controls will not work.');
+              }
+            }).catch(() => {
               alert('Permission denied. Tilt controls will not work.');
-            }
-          }).catch(() => {
-            alert('Permission denied. Tilt controls will not work.');
-          });
-        } else {
-          enableTilt();
-        }
-      };
-    }
+            });
+          } else {
+            enableTilt();
+          }
+        };
+      }
+    }, 4300); // Wait for cake/candle drop to finish
   });
   setupTiltControls();
 } else {
