@@ -163,17 +163,24 @@ function updateShark() {
   }
   lastX = currentX;
 
-  // Collision detection with soup bowl
+  // Collision detection with soup bowl (smaller activation zone)
   if (soup && !soupHidden) {
     const sharkRect = shark.getBoundingClientRect();
     const soupRect = soup.getBoundingClientRect();
-    const overlap = !(
-      sharkRect.right < soupRect.left ||
-      sharkRect.left > soupRect.right ||
-      sharkRect.bottom < soupRect.top ||
-      sharkRect.top > soupRect.bottom
-    );
-    if (overlap) {
+    // Use the center of the shark and a smaller central zone of the soup
+    const sharkCenterX = (sharkRect.left + sharkRect.right) / 2;
+    const sharkCenterY = (sharkRect.top + sharkRect.bottom) / 2;
+    // Define a smaller activation zone (e.g., 40% width/height of soup)
+    const zoneWidth = soupRect.width * 0.4;
+    const zoneHeight = soupRect.height * 0.4;
+    const zoneLeft = soupRect.left + (soupRect.width - zoneWidth) / 2;
+    const zoneTop = soupRect.top + (soupRect.height - zoneHeight) / 2;
+    const inZone =
+      sharkCenterX > zoneLeft &&
+      sharkCenterX < zoneLeft + zoneWidth &&
+      sharkCenterY > zoneTop &&
+      sharkCenterY < zoneTop + zoneHeight;
+    if (inZone) {
       soup.style.visibility = 'hidden';
       soupHidden = true;
       nourishmentCount++;
