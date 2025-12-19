@@ -40,11 +40,11 @@ function isMobile() {
   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 }
 
-if (isMobile() && window.DeviceOrientationEvent) {
-  // Use device tilt for shark movement
+let tiltEnabled = false;
+function setupTiltControls() {
+  if (!window.DeviceOrientationEvent) return;
   window.addEventListener('deviceorientation', (event) => {
-    // gamma: left/right, beta: up/down
-    // gamma: -90 (left) to 90 (right), beta: -180 (up) to 180 (down)
+    if (!tiltEnabled) return;
     const gamma = event.gamma || 0; // left/right
     const beta = event.beta || 0;   // up/down
     // Map gamma to X position
@@ -58,6 +58,37 @@ if (isMobile() && window.DeviceOrientationEvent) {
     mappedY = Math.max(minY, Math.min(maxY, mappedY));
     targetY = mappedY;
   });
+}
+
+if (isMobile() && window.DeviceOrientationEvent) {
+  // Show overlay and request permission on iOS 13+
+  window.addEventListener('DOMContentLoaded', () => {
+    const overlay = document.getElementById('tilt-permission-overlay');
+    if (overlay) overlay.style.display = 'flex';
+    const btn = document.getElementById('enable-tilt-btn');
+    if (btn) {
+      btn.onclick = function() {
+        function enableTilt() {
+          tiltEnabled = true;
+          if (overlay) overlay.style.display = 'none';
+        }
+        if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+          DeviceOrientationEvent.requestPermission().then((response) => {
+            if (response === 'granted') {
+              enableTilt();
+            } else {
+              alert('Permission denied. Tilt controls will not work.');
+            }
+          }).catch(() => {
+            alert('Permission denied. Tilt controls will not work.');
+          });
+        } else {
+          enableTilt();
+        }
+      };
+    }
+  });
+  setupTiltControls();
 } else {
   // Desktop fallback: mouse and touch
   document.addEventListener('mousemove', (e) => {
