@@ -2,6 +2,8 @@ const shark = document.querySelector('.shark');
 const soup = document.querySelector('.soup-svg');
 const nourishmentCountEl = document.getElementById('nourishment-count');
 let nourishmentCount = 0;
+let popupShown = false;
+let finishPopupShown = false;
 
 // --- Soup random movement ---
 let soupTargetX = 0;
@@ -96,10 +98,40 @@ function updateShark() {
       soupHidden = true;
       nourishmentCount++;
       if (nourishmentCountEl) nourishmentCountEl.textContent = nourishmentCount;
+      // First popup
+      if (!popupShown && nourishmentCount === 1) {
+        popupShown = true;
+        const popup = document.getElementById('shark-popup');
+        if (popup) {
+          popup.classList.add('show');
+          const btn = document.getElementById('shark-popup-btn');
+          if (btn) {
+            btn.onclick = () => {
+              popup.classList.remove('show');
+            };
+          }
+        }
+      }
+      // Finish popup
+      if (!finishPopupShown && nourishmentCount === 10) {
+        finishPopupShown = true;
+        const popup = document.getElementById('shark-popup-finish');
+        if (popup) {
+          popup.classList.add('show');
+          const btn = document.getElementById('shark-popup-finish-btn');
+          if (btn) {
+            btn.onclick = () => {
+              popup.classList.remove('show');
+              // You can add a redirect or treat logic here
+            };
+          }
+        }
+      }
       setTimeout(() => {
         soup.style.visibility = 'visible';
         soupHidden = false;
-      }, 2000);
+        moveSoupRandomly(); // Immediately move after reappearing
+      }, 3000);
     }
   }
 
