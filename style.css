@@ -54,6 +54,7 @@
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   cursor: pointer;
   transition: background 0.2s, transform 0.15s;
+   text-decoration: none;
 }
 .shark-popup-btn:hover {
   background: linear-gradient(90deg, #FF69B4 0%, #4EC8D8 100%);
