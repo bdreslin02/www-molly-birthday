@@ -1,3 +1,35 @@
+.source-bar {
+  position: fixed;
+  top: 18px;
+  right: 22px;
+  z-index: 1002;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+@media (max-width: 600px) {
+  .source-bar {
+    position: static;
+    top: auto;
+    right: auto;
+    left: 0;
+    margin: 0 auto;
+    width: 100vw;
+    max-width: 100vw;
+    justify-content: center;
+    padding-top: 8px;
+    z-index: 101;
+  }
+  #nourishment-counter {
+    position: static !important;
+    margin: 0 auto;
+    width: 100vw;
+    max-width: 100vw;
+    text-align: center;
+    display: block;
+    z-index: 102;
+  }
+}
 /* Shark Nourishment Popup */
 .shark-popup {
   display: none;
