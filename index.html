@@ -108,11 +108,22 @@
   <div class="balloon"></div>
   <div class="balloon"></div>
 
-  <!-- Nourishment Counter -->
-  <div id="nourishment-counter" style="position:fixed;top:10px;left:10px;font-size:1.3em;font-weight:bold;background:rgba(255,255,255,0.8);padding:8px 18px;border-radius:18px;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.08);color:#663333;letter-spacing:1px;user-select:none;">
-    Nourishment Counter: <span id="nourishment-count">0</span>
+  <!-- Nourishment Counter and Source Bar -->
+  <div class="top-bar">
+    <div id="nourishment-counter">
+      Nourishment Counter: <span id="nourishment-count">0</span>
+    </div>
+    <div class="source-bar">
+      <span class="source-tooltip" id="source-tooltip-trigger">
+        <span class="source-tooltip-icon">&#9432;</span>
+        <span class="source-tooltip-popup" id="source-tooltip-popup">
+          I made this website myself. To look at the 600 lines of code, click on index.html, style.css, and script.js
+        </span>
+      </span>
+      <a href="https://github.com/bdreslin02/www-molly-birthday" target="_blank" rel="noopener noreferrer" class="source-code-btn">View Source Code</a>
+    </div>
   </div>
-    <div id="tilt-permission-overlay" style="display:none;position:fixed;z-index:2000;top:0;left:0;width:100vw;height:100vh;background:rgba(255,255,255,0.97);align-items:center;justify-content:center;text-align:center;">
+  <div id="tilt-permission-overlay" style="display:none;position:fixed;z-index:2000;top:0;left:0;width:100vw;height:100vh;background:rgba(255,255,255,0.97);align-items:center;justify-content:center;text-align:center;">
       <div style="max-width:90vw;padding:32px 18px 24px 18px;border-radius:18px;box-shadow:0 2px 16px rgba(0,0,0,0.10);background:#fff;">
         <div style="font-size:1.2em;font-weight:600;color:#663333;margin-bottom:18px;">Enable Tilt Controls</div>
         <div style="font-size:1em;color:#555;margin-bottom:18px;">Oh no! Betty the Birthday Shark is hungry and needs your help. Only good soup will satisfy her cravings. To move Betty with your phone, tap below and allow access to your device's motion sensors.</div>
