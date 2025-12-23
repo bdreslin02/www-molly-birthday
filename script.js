@@ -78,19 +78,29 @@ let currentY = 80;
 let soupHidden = false;
 // Tooltip for source code button (mobile tap support)
 document.addEventListener('DOMContentLoaded', function() {
-  var tooltipTrigger = document.getElementById('source-tooltip-trigger');
+  var tooltipIcon = document.getElementById('source-tooltip-icon');
   var tooltipPopup = document.getElementById('source-tooltip-popup');
-  if (tooltipTrigger && tooltipPopup) {
-    // Desktop: hover handled by CSS
-    // Mobile: tap to show/hide
-    tooltipTrigger.addEventListener('touchstart', function(e) {
-      e.stopPropagation();
-      tooltipTrigger.classList.toggle('active');
+  if (tooltipIcon && tooltipPopup) {
+    // Desktop: show on hover
+    tooltipIcon.addEventListener('mouseenter', function() {
+      tooltipPopup.style.display = 'block';
     });
-    // Hide tooltip if tap elsewhere
+    tooltipIcon.addEventListener('mouseleave', function() {
+      tooltipPopup.style.display = 'none';
+    });
+    // Mobile: show on touch
+    tooltipIcon.addEventListener('touchstart', function(e) {
+      e.stopPropagation();
+      if (tooltipPopup.style.display === 'block') {
+        tooltipPopup.style.display = 'none';
+      } else {
+        tooltipPopup.style.display = 'block';
+      }
+    });
+    // Hide tooltip if tap elsewhere on mobile
     document.body.addEventListener('touchstart', function(e) {
-      if (!tooltipTrigger.contains(e.target)) {
-        tooltipTrigger.classList.remove('active');
+      if (!tooltipIcon.contains(e.target)) {
+        tooltipPopup.style.display = 'none';
       }
     });
   }
