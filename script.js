@@ -76,6 +76,25 @@ let targetY = 80;
 let currentX = window.innerWidth / 2;
 let currentY = 80;
 let soupHidden = false;
+// Tooltip for source code button (mobile tap support)
+document.addEventListener('DOMContentLoaded', function() {
+  var tooltipTrigger = document.getElementById('source-tooltip-trigger');
+  var tooltipPopup = document.getElementById('source-tooltip-popup');
+  if (tooltipTrigger && tooltipPopup) {
+    // Desktop: hover handled by CSS
+    // Mobile: tap to show/hide
+    tooltipTrigger.addEventListener('touchstart', function(e) {
+      e.stopPropagation();
+      tooltipTrigger.classList.toggle('active');
+    });
+    // Hide tooltip if tap elsewhere
+    document.body.addEventListener('touchstart', function(e) {
+      if (!tooltipTrigger.contains(e.target)) {
+        tooltipTrigger.classList.remove('active');
+      }
+    });
+  }
+});
 // Detect mobile device
 function isMobile() {
   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
