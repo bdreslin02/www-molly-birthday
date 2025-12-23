@@ -76,6 +76,34 @@ body {
 }
 /* Scene wrapper */
 .scene {
+/* Tooltip popup responsive positioning */
+.source-tooltip-popup {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 110%;
+  background: rgba(255,255,255,0.95);
+  color: #663333;
+  padding: 10px 16px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  font-size: 0.95em;
+  white-space: pre;
+  z-index: 200;
+  min-width: 120px;
+}
+@media (max-width: 600px) {
+  .source-tooltip-popup {
+    left: 50%;
+    top: 110%;
+    transform: translateX(-50%);
+    min-width: 0;
+    max-width: 96vw;
+    width: auto;
+    white-space: normal;
+    box-sizing: border-box;
+  }
+}
   position: relative;
   width: 200px;
   overflow: visible;

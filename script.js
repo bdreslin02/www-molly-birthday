@@ -83,10 +83,10 @@ document.addEventListener('DOMContentLoaded', function() {
   if (tooltipIcon && tooltipPopup) {
     // Desktop: show on hover
     tooltipIcon.addEventListener('mouseenter', function() {
-      tooltipPopup.style.display = 'block';
+        tooltipPopup.style.display = 'block';
     });
     tooltipIcon.addEventListener('mouseleave', function() {
-      tooltipPopup.style.display = 'none';
+        tooltipPopup.style.display = 'none';
     });
     // Mobile: show on touch
     tooltipIcon.addEventListener('touchstart', function(e) {
